@@ -17,3 +17,9 @@ variable "sns_alert_email" {
   type = string
   description = "Valid email address alarm notifications get sent"
 }
+
+variable "cw_alarm_period" {
+  type = number
+  default = 1
+  description = "Interval to check alarm in hours"
+}

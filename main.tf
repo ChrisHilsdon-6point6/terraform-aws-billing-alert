@@ -10,7 +10,7 @@ resource "aws_cloudwatch_metric_alarm" "zero_spend_budget_alarm" {
   metric_name = "EstimatedCharges"
   namespace = "AWS/Billing"
   statistic = "Maximum"
-  period = "21600"
+  period = "${var.cw_alarm_period * 60 * 60}"
   threshold = "0"
   evaluation_periods = "1"
   comparison_operator = "GreaterThanThreshold"
