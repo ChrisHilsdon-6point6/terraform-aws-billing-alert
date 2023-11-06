@@ -1,4 +1,8 @@
 # Modified from https://github.com/github/gitignore/blob/main/Terraform.gitignore
+
+# Ignore .env files
+*.env
+
 # Local .terraform directories
 **/.terraform/*
 
