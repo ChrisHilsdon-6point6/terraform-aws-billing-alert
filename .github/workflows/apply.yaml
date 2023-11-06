@@ -3,8 +3,8 @@ name: Terraform-apply
 on:
   push:
     branches:
-        - '*'
-        - '!master'
+      - '!*'
+      - 'master'
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ env:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    name: Create a plan with terraform configuration
+    name: Run apply on terraform configuration
     steps:      
       - name: Checkout
         uses: actions/checkout@v3
