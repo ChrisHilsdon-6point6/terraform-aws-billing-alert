@@ -1,0 +1,44 @@
+name: Terraform-apply
+
+on:
+  - push
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  ACTIONS_RUNNER_DEBUG: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    name: Create a plan with terraform configuration
+    steps:      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get remote state
+        uses: dflook/terraform-remote-state@v1
+        id: remote-state
+        with:
+          backend_type: s3
+          backend_config: |
+            bucket=${{ secrets.TFSTATE_BUCKET }}
+            key=${{ secrets.TFSTATE_KEY }}
+            region=${{ secrets.TFSTATE_REGION }}
+
+      - name: terraform plan
+        uses: dflook/terraform-plan@v1
+        depens_on: [remote-state]
+        with:
+          path: .
+          variables: |
+            aws_region = "${{ secrets.AWS_REGION }}"
+            aws_access_key = "${{ secrets.AWS_ACCESS_KEY }}"
+            aws_secret_key = "${{ secrets.AWS_SECRET_KEY }}"
+            sns_alert_email = "${{ secrets.SNS_ALERT_EMAIL }}"
+            cw_alarm_period = "${{ secrets.CW_ALARM_PERIOD }}"
