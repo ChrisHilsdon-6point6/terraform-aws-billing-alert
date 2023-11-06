@@ -33,7 +33,6 @@ jobs:
 
       - name: terraform plan
         uses: dflook/terraform-plan@v1
-        depens_on: [remote-state]
         with:
           path: .
           variables: |
