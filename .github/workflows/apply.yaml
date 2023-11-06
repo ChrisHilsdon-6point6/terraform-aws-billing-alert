@@ -21,18 +21,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get remote state
-        uses: dflook/terraform-remote-state@v1
-        id: remote-state
-        with:
-          backend_type: s3
-          backend_config: |
-            bucket=${{ secrets.TFSTATE_BUCKET }}
-            key=${{ secrets.TFSTATE_KEY }}
-            region=${{ secrets.TFSTATE_REGION }}
+      - name: Create backend.tf
+        working-directory: ${{ env.WORKING_DIR }}
+        id: backend
+        run: |
+          cat > backend.tf << EOF
+          terraform {
+            backend "s3" {
+              bucket = "${{ secrets.TFSTATE_BUCKET }}"
+              key    = "${{ secrets.TFSTATE_KEY }}"
+              region = "${{ secrets.TFSTATE_REGION }}"
+            }
+          }
+          EOF
 
-      - name: terraform plan
-        uses: dflook/terraform-plan@v1
+      - uses: hashicorp/setup-terraform@v2
+      - name: Terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+        id: init
+        run: |
+          terraform init --reconfigure
+
+      - name: terraform apply
+        uses: dflook/terraform-apply@v1
         with:
           path: .
           variables: |
