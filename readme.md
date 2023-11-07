@@ -15,6 +15,9 @@ After cloning this repo locally use the following setups to deploy this to your 
 5. Run `terraform apply` to create the CloudWatch alarm, SNS topic and subscription.
 6. Once the SNS topic has been created, you should receive an email from AWS. Click the link to confirm the topic subscription and receive any future notifications from this alarm.
 
+### Extra Options
+By default the CloudWatch alarm interval is set to 1 hour. You can change this by setting the `cw_alarm_period` terraform variable in terraform.tfvars. This should be type number.
+
 ## Github actions
 You can use Github actions to deploy this configuration. A plan will be created on PR request and then apply is run once merged into master.
 
@@ -37,9 +40,6 @@ You can use Github actions to deploy this configuration. A plan will be created 
 | TFSTATE_BUCKET     | s3 bucket name used to store tf state                         |
 | TFSTATE_KEY        | Path to state file within bucket                              |
 | TFSTATE_REGION     | The region the bucket resides in                              |
-
-### Extra Options
-By default the CloudWatch alarm interval is set to 1 hour. You can change this by setting the `cw_alarm_period` terraform variable in terraform.tfvars. This should be type number.
 
 ## Resources used
 https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/tracking-free-tier-usage.html
