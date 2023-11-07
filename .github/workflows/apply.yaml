@@ -45,7 +45,7 @@ jobs:
         run: |
           terraform init --reconfigure
 
-      - name: terraform apply
+      - name: Terraform apply
         uses: dflook/terraform-apply@v1
         with:
           path: .
