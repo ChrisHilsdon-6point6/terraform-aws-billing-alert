@@ -15,6 +15,10 @@ resource "aws_cloudwatch_metric_alarm" "zero_spend_budget_alarm" {
   evaluation_periods = "1"
   comparison_operator = "GreaterThanThreshold"
   alarm_actions = [aws_sns_topic.zero_spend_budget_alert.arn]
+
+  dimensions = {
+    Currency = "USD"
+  }
 }
 
 resource "aws_sns_topic" "zero_spend_budget_alert" {
