@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "zero_spend_budget_alarm" {
   namespace = "AWS/Billing"
   statistic = "Maximum"
   period = "${var.cw_alarm_period * 60 * 60}"
-  threshold = "0.01"
+  threshold = "${var.cw_alarm_threshold}"
   evaluation_periods = "1"
   comparison_operator = "GreaterThanThreshold"
   alarm_actions = [aws_sns_topic.zero_spend_budget_alert.arn]
